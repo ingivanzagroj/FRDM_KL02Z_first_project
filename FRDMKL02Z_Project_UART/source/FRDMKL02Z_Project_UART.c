@@ -49,7 +49,16 @@
 /*
  * @brief   Application entry point.
  */
+
+
 int main(void) {
+
+	/* Define the init structure for the output LED pin*/
+			    gpio_pin_config_t led_config = {
+			        kGPIO_DigitalOutput, 0,
+			    };
+
+
   	/* Init board hardware. */
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
@@ -59,7 +68,37 @@ int main(void) {
     BOARD_InitDebugConsole();
 #endif
 
+
+    /* Print a note to terminal. */
+        PRINTF("\r\n GPIO Driver example\r\n");
+        PRINTF("\r\n The LED is blinking.\r\n");
+
     (void)uart0Inicializar(115200);
+
+
+    /* Init output LED GPIO. */
+            //Configura LED ROJO (PTB6) como salida
+            GPIO_PinInit(GPIOB, 6U, &led_config);
+
+            //Configura LED VERDE (PTB7) como salida
+            GPIO_PinInit(GPIOB, 7U, &led_config);
+
+            //Configura LED AZUL (PTB10) como salida
+            GPIO_PinInit(GPIOB, 10U, &led_config);
+
+
+
+
+            //Sacar 1 por pin LED AZUL (apaga)
+                	 GPIO_PortSet(GPIOB, 1u << BOARD_LED_BLUE_GPIO_PIN);
+
+                	 //Sacar 1 por pin LED VERDE (apaga)
+                	 GPIO_PortSet(GPIOB, 1u << BOARD_LED_GREEN_GPIO_PIN);
+
+                	 //Sacar 1 por pin LED ROJO (apaga)
+                	 GPIO_PortSet(GPIOB, 1u << BOARD_LED_RED_GPIO_PIN);
+
+
 
     while(1) {
     	status_t status;
@@ -67,8 +106,51 @@ int main(void) {
 
     	if(uart0NuevosDatosEnBuffer()>0){
     		status=uart0LeerByteDesdeBufferCircular(&nuevo_byte);
+
     		if(status==kStatus_Success){
-    			printf("dato:%c\r\n",nuevo_byte);
+
+
+    			if(nuevo_byte==65){
+    				//Sacar 0 por pin LED AZUL (enciende)
+    				GPIO_PortClear(GPIOB, 1u << BOARD_LED_BLUE_GPIO_PIN);
+    				printf("Azúl enciende:%c\r\n",nuevo_byte);
+    			}
+
+    			if(nuevo_byte==97){
+    				//Sacar 1 por pin LED AZUL (apaga)
+    				GPIO_PortSet(GPIOB, 1u << BOARD_LED_BLUE_GPIO_PIN);
+    			    printf("Azúl apagado:%c\r\n",nuevo_byte);
+    			}
+
+
+
+    			if(nuevo_byte==86){
+    				//Sacar 0 por pin LED VERDE (enciende)
+    				GPIO_PortClear(GPIOB, 1u << BOARD_LED_GREEN_GPIO_PIN);
+    			    printf("Verde enciende:%c\r\n",nuevo_byte);
+    			}
+
+    			if(nuevo_byte==118){
+    				//Sacar 1 por pin LED VERDE (apaga)
+    				GPIO_PortSet(GPIOB, 1u << BOARD_LED_GREEN_GPIO_PIN);
+    			    printf("Verde apaga:%c\r\n",nuevo_byte);
+    			}
+
+
+
+    			if(nuevo_byte==82){
+    				//Sacar 0 por pin LED ROJO (enciende)
+    				GPIO_PortClear(GPIOB, 1u << BOARD_LED_RED_GPIO_PIN);
+    			    printf("Rojo enciende:%c\r\n",nuevo_byte);
+    			}
+
+    			if(nuevo_byte==114){
+    				//Sacar 1 por pin LED ROJO (apaga)
+    				GPIO_PortSet(GPIOB, 1u << BOARD_LED_RED_GPIO_PIN);
+    			    printf("Rojo apaga:%c\r\n",nuevo_byte);
+    			}
+
+
     		}else{
     			printf("error\r\n");
     		}
