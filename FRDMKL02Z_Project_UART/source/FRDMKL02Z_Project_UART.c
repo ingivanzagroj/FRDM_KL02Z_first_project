@@ -87,7 +87,7 @@ int main(void) {
      PRINTF("\r\n     ON        ||      OFF      ||       ON      ||      OFF      ||       ON      ||      OFF     ");
      PRINTF("\r\n Presione : R  ||  Presione: r  ||  Presione: V  ||  Presione: v  ||  Presione: A  ||  Presione: a \r\n");
      PRINTF("\r\n Presione T para ver una secuencia de colores y combinaciones");
-     PRINTF("\r\n Presione t para apagar todos los leds\r\n");
+     //PRINTF("\r\n Presione t para apagar todos los leds\r\n");
      PRINTF("\r\n");
 
 
